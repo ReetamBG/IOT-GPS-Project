@@ -1,11 +1,12 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express, { type Request, type Response } from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import { login } from "./controllers/auth.controller.js";
 import { createWebSocketServer } from "./lib/ws.js";
 import { createServer } from "http";
 
-dotenv.config();
+
 
 const PORT = process.env.PORT || 8000;
 if (!process.env.FRONTEND_URL) throw new Error("FRONTEND_URL not set in .env");
