@@ -11,8 +11,26 @@ export function useGPSWebsocket() {
   ]); // need proper initial position, maybe center of the map?
 
   useEffect(() => {
+    function resolveWebSocketUrl(baseUrl: string) {
+      if (baseUrl.startsWith("ws://") || baseUrl.startsWith("wss://"))
+        return baseUrl;
+      if (baseUrl.startsWith("http://"))
+        return `ws://${baseUrl.slice("http://".length)}`;
+      if (baseUrl.startsWith("https://"))
+        return `wss://${baseUrl.slice("https://".length)}`;
+
+      const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+      const normalizedPath = baseUrl.startsWith("/") ? baseUrl : `/${baseUrl}`;
+      return `${protocol}//${window.location.host}${normalizedPath}`;
+    }
+
     function connect() {
-      ws.current = new WebSocket(import.meta.env.VITE_BACKEND_URL!);
+      // ws.current = new WebSocket(import.meta.env.VITE_BACKEND_URL!);
+      const websocketUrl = resolveWebSocketUrl(
+        import.meta.env.VITE_BACKEND_URL!,
+      );
+      ws.current = new WebSocket(websocketUrl);
+
       if (!ws.current) throw new Error("Failed to create WebSocket connection");
       const socket = ws.current;
 
