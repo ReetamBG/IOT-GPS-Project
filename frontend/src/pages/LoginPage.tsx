@@ -29,7 +29,10 @@ const LoginPage = ({
     setLoading(true);
 
     try {
-      const url = import.meta.env.VITE_BACKEND_URL + "/login";
+      // const url = import.meta.env.VITE_BACKEND_URL + "/login";
+      // Dynamically swap "ws://" to "http://" and "wss://" to "https://"
+      const baseUrl = import.meta.env.VITE_BACKEND_URL.replace(/^ws/, "http");
+      const url = baseUrl + "/login";
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
