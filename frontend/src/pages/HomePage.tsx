@@ -20,6 +20,16 @@ function RecenterMap({ position }: { position: LatLngExpression }) {
 
 // override default marker icon 
 // leaflet icon was causing some problem in prod build, so using custom icon with same images
+// L.Icon.Default.mergeOptions({
+//   iconRetinaUrl: markerIcon2x,
+//   iconUrl: markerIcon,
+//   shadowUrl: markerShadow,
+// });
+
+// 1. Forcefully delete the cached internal getter (THE MISSING LINE)
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+
+// 2. Re-apply the Vite-hashed images
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
   iconUrl: markerIcon,
