@@ -19,9 +19,9 @@ export function createWebSocketServer(server: Server) {
       path: "/dev/serial0",
       baudRate: 9600,
     });
-    console.log("✅ Successfully connected to hardware serial port: /dev/serial0");
+    console.log("Successfully connected to hardware serial port: /dev/serial0");
   } catch (err) {
-    console.error("❌ CRITICAL ERROR: Could not open serial port. Is it wired correctly?", err);
+    console.error("CRITICAL ERROR: Could not open serial port. Is it wired correctly?", err);
     return wss; // Return early to prevent server crash
   }
 
@@ -31,18 +31,18 @@ export function createWebSocketServer(server: Server) {
   // --- WEBSOCKET CLIENT MANAGEMENT ---
   wss.on("connection", (ws, req) => {
     const clientIP = req.socket.remoteAddress;
-    console.log(`📡 New WebSocket client connected from: ${clientIP}`);
-    console.log(`👥 Total active clients: ${wss.clients.size}`);
+    console.log(`New WebSocket client connected from: ${clientIP}`);
+    console.log(`Total active clients: ${wss.clients.size}`);
 
     // Send an immediate "connected" confirmation payload
     ws.send(JSON.stringify({ type: "SYSTEM", message: "Connected to GPS Node" }));
 
     ws.on("close", (code, reason) => {
-      console.log(`🔌 Client disconnected. Code: ${code}. Active clients: ${wss.clients.size}`);
+      console.log(`Client disconnected. Code: ${code}. Active clients: ${wss.clients.size}`);
     });
 
     ws.on("error", (error) => {
-      console.error(`❌ WebSocket Client Error: ${error}`);
+      console.error(`WebSocket Client Error: ${error}`);
     });
   });
 
@@ -82,7 +82,7 @@ export function createWebSocketServer(server: Server) {
 
   // --- HARDWARE ERROR HANDLING ---
   port.on("error", (err) => {
-    console.error("❌ Hardware Serial Error:", err.message);
+    console.error("Hardware Serial Error:", err.message);
   });
 
   return wss;
@@ -98,7 +98,7 @@ function broadcastToClients(wss: WebSocketServer, data: object) {
       try {
         client.send(JSON.stringify(data));
       } catch (error) {
-        console.error("❌ Error broadcasting to a client:", error);
+        console.error("Error broadcasting to a client:", error);
       }
     }
   });

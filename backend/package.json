@@ -29,8 +29,11 @@
     "#/*": "./src/*"
   },
   "dependencies": {
+    "@serialport/parser-readline": "^13.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.2.4",
+    "gps": "^0.8.1",
+    "serialport": "^13.0.0",
     "ws": "^8.19.0"
   }
 }
